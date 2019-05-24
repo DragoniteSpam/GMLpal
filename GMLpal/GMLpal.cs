@@ -6,6 +6,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
 using System.Xml;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace GMLpal {
     public enum GMSTypes {
@@ -102,7 +103,7 @@ namespace GMLpal {
         }
 
         private void OpenGMS2() {
-
+            MessageBox.Show(JsonConvert.DeserializeObject<GMS2Project>(File.ReadAllText(fileName)).ToString());
         }
         public void AddScripts(XmlNode folder, TreeNode node) {
             if (folder == null) return;
