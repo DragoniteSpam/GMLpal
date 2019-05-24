@@ -132,7 +132,7 @@
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.openToolStripMenuItem.Text = "Open...";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // saveChangesToolStripMenuItem
             // 
@@ -140,7 +140,7 @@
             this.saveChangesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveChangesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.saveChangesToolStripMenuItem.Text = "Save changes";
-            this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.saveChangesToolStripMenuItem_Click);
+            this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.SaveChangesToolStripMenuItem_Click);
             // 
             // reloadToolStripMenuItem
             // 
@@ -148,7 +148,7 @@
             this.reloadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.reloadToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
-            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
+            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.ReloadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -156,7 +156,7 @@
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // toolStripDropDownButton2
             // 
@@ -177,7 +177,7 @@
             this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.findToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.findToolStripMenuItem.Text = "Find and replace...";
-            this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
+            this.findToolStripMenuItem.Click += new System.EventHandler(this.FindToolStripMenuItem_Click);
             // 
             // toolStripDropDownButton3
             // 
@@ -198,14 +198,14 @@
             this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
             this.statsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.statsToolStripMenuItem.Text = "Stats...";
-            this.statsToolStripMenuItem.Click += new System.EventHandler(this.statsToolStripMenuItem_Click);
+            this.statsToolStripMenuItem.Click += new System.EventHandler(this.StatsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // container
             // 
@@ -242,7 +242,7 @@
             this.treeProject.SelectedImageIndex = 1;
             this.treeProject.Size = new System.Drawing.Size(176, 385);
             this.treeProject.TabIndex = 0;
-            this.treeProject.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeProject_AfterSelect);
+            this.treeProject.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeProject_AfterSelect);
             // 
             // imageListTree
             // 
@@ -354,7 +354,7 @@
             this.cbxReplace.TabIndex = 21;
             this.cbxReplace.Text = "Replace:";
             this.cbxReplace.UseVisualStyleBackColor = true;
-            this.cbxReplace.CheckedChanged += new System.EventHandler(this.cbxReplace_CheckedChanged);
+            this.cbxReplace.CheckedChanged += new System.EventHandler(this.CbxReplace_CheckedChanged);
             // 
             // cbxFindWord
             // 
@@ -425,7 +425,7 @@
             this.rbtnFindSimple.TabStop = true;
             this.rbtnFindSimple.Text = "Simple";
             this.rbtnFindSimple.UseVisualStyleBackColor = true;
-            this.rbtnFindSimple.CheckedChanged += new System.EventHandler(this.rbtnFindSimple_CheckedChanged);
+            this.rbtnFindSimple.CheckedChanged += new System.EventHandler(this.RbtnFindSimple_CheckedChanged);
             // 
             // rbtnFindAdvanced
             // 
@@ -436,7 +436,7 @@
             this.rbtnFindAdvanced.TabIndex = 5;
             this.rbtnFindAdvanced.Text = "Advanced (RegEx)";
             this.rbtnFindAdvanced.UseVisualStyleBackColor = true;
-            this.rbtnFindAdvanced.CheckedChanged += new System.EventHandler(this.rbtnFindAdvanced_CheckedChanged);
+            this.rbtnFindAdvanced.CheckedChanged += new System.EventHandler(this.RbtnFindAdvanced_CheckedChanged);
             // 
             // rbtnFindSelected
             // 
@@ -447,7 +447,7 @@
             this.rbtnFindSelected.TabIndex = 9;
             this.rbtnFindSelected.Text = "Find within selected item";
             this.rbtnFindSelected.UseVisualStyleBackColor = true;
-            this.rbtnFindSelected.CheckedChanged += new System.EventHandler(this.rbtnFindSelected_CheckedChanged);
+            this.rbtnFindSelected.CheckedChanged += new System.EventHandler(this.RbtnFindSelected_CheckedChanged);
             // 
             // rbtnFindProject
             // 
@@ -472,7 +472,7 @@
             this.btnFind.TabIndex = 8;
             this.btnFind.Text = "Find";
             this.btnFind.UseVisualStyleBackColor = true;
-            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
+            this.btnFind.Click += new System.EventHandler(this.BtnFind_Click);
             // 
             // treeFind
             // 
@@ -495,7 +495,7 @@
             this.btnFindClose.TabIndex = 4;
             this.btnFindClose.Text = "X";
             this.btnFindClose.UseVisualStyleBackColor = true;
-            this.btnFindClose.Click += new System.EventHandler(this.btnFindClose_Click);
+            this.btnFindClose.Click += new System.EventHandler(this.BtnFindClose_Click);
             // 
             // lblFindHeader
             // 
@@ -525,7 +525,7 @@
             this.tbxFind.Name = "tbxFind";
             this.tbxFind.Size = new System.Drawing.Size(252, 20);
             this.tbxFind.TabIndex = 1;
-            this.tbxFind.TextChanged += new System.EventHandler(this.tbxFind_TextChanged);
+            this.tbxFind.TextChanged += new System.EventHandler(this.TbxFind_TextChanged);
             // 
             // tabView3
             // 
@@ -570,7 +570,7 @@
             this.cbxStatsNamesOnly.TabIndex = 14;
             this.cbxStatsNamesOnly.Text = "Names only";
             this.cbxStatsNamesOnly.UseVisualStyleBackColor = true;
-            this.cbxStatsNamesOnly.CheckedChanged += new System.EventHandler(this.cbxStatsNamesOnly_CheckedChanged);
+            this.cbxStatsNamesOnly.CheckedChanged += new System.EventHandler(this.CbxStatsNamesOnly_CheckedChanged);
             // 
             // rbtnStatsItems
             // 
@@ -582,7 +582,7 @@
             this.rbtnStatsItems.TabIndex = 13;
             this.rbtnStatsItems.Text = "Items";
             this.rbtnStatsItems.UseVisualStyleBackColor = true;
-            this.rbtnStatsItems.CheckedChanged += new System.EventHandler(this.rbtnStatsSize_CheckedChanged);
+            this.rbtnStatsItems.CheckedChanged += new System.EventHandler(this.RbtnStatsSize_CheckedChanged);
             // 
             // rbtnStatsSize
             // 
@@ -594,7 +594,7 @@
             this.rbtnStatsSize.TabIndex = 13;
             this.rbtnStatsSize.Text = "Size";
             this.rbtnStatsSize.UseVisualStyleBackColor = true;
-            this.rbtnStatsSize.CheckedChanged += new System.EventHandler(this.rbtnStatsSize_CheckedChanged);
+            this.rbtnStatsSize.CheckedChanged += new System.EventHandler(this.RbtnStatsSize_CheckedChanged);
             // 
             // rbtnStatsLines
             // 
@@ -608,7 +608,7 @@
             this.rbtnStatsLines.TabStop = true;
             this.rbtnStatsLines.Text = "Lines of code";
             this.rbtnStatsLines.UseVisualStyleBackColor = true;
-            this.rbtnStatsLines.CheckedChanged += new System.EventHandler(this.rbtnStatsLines_CheckedChanged);
+            this.rbtnStatsLines.CheckedChanged += new System.EventHandler(this.RbtnStatsLines_CheckedChanged);
             // 
             // btnStatsShuffleColors
             // 
@@ -619,7 +619,7 @@
             this.btnStatsShuffleColors.TabIndex = 12;
             this.btnStatsShuffleColors.Text = "Shuffle colors";
             this.btnStatsShuffleColors.UseVisualStyleBackColor = true;
-            this.btnStatsShuffleColors.Click += new System.EventHandler(this.btnStatsShuffleColors_Click);
+            this.btnStatsShuffleColors.Click += new System.EventHandler(this.BtnStatsShuffleColors_Click);
             // 
             // label1
             // 
@@ -645,7 +645,7 @@
             this.cmbxStatsChart.Name = "cmbxStatsChart";
             this.cmbxStatsChart.Size = new System.Drawing.Size(97, 21);
             this.cmbxStatsChart.TabIndex = 10;
-            this.cmbxStatsChart.SelectedIndexChanged += new System.EventHandler(this.cmbxStatsChart_SelectedIndexChanged);
+            this.cmbxStatsChart.SelectedIndexChanged += new System.EventHandler(this.CmbxStatsChart_SelectedIndexChanged);
             // 
             // lblStats
             // 
@@ -684,7 +684,7 @@
             this.btnStatsClose.TabIndex = 6;
             this.btnStatsClose.Text = "X";
             this.btnStatsClose.UseVisualStyleBackColor = true;
-            this.btnStatsClose.Click += new System.EventHandler(this.btnStatsClose_Click);
+            this.btnStatsClose.Click += new System.EventHandler(this.BtnStatsClose_Click);
             // 
             // lblStatsHeader
             // 

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
@@ -14,20 +9,26 @@ using System.Text.RegularExpressions;
 
 namespace GMLpal {
     public partial class GMLpal : Form {
-        string fileDisplayName = "", fileName = "", filePath = "", tab = "", dndCode = "603";
-        string[] shaderSep = new string[] { "//######################_==_YOYO_SHADER_MARKER_==_######################@~" };
-        List<Code> codeList = new List<Code>();
-        Control controlsCode, controlsFind, controlsStats;
-        Regex regexObject;
-        RegexOptions regexOptions;
-        int findResults, findItems;
-        string findRegex, replaceRegex;
-        bool changed, askBackup;
-        int statsLines, statsSize, statsItems;
-        SeriesChartType statsChart = SeriesChartType.Pie;
-        List<Color> chartPalette = new List<Color>();
-        Random rnd = new Random();
-        Font matchFont = new Font("Consolas", 8.25f, FontStyle.Regular);
+        private string fileDisplayName = "";
+        private string fileName = "";
+        private string filePath = "";
+        private string tab = "";
+
+        private readonly string dndCode = "603";
+        private readonly string[] shaderSep = new string[] { "//######################_==_YOYO_SHADER_MARKER_==_######################@~" };
+        private readonly List<Code> codeList = new List<Code>();
+        private readonly Control controlsCode, controlsFind, controlsStats;
+        private readonly List<Color> chartPalette = new List<Color>();
+        private readonly Random rnd = new Random();
+        private readonly Font matchFont = new Font("Consolas", 8.25f, FontStyle.Regular);
+
+        private Regex regexObject;
+        private RegexOptions regexOptions;
+        private int findResults, findItems;
+        private string findRegex, replaceRegex;
+        private bool changed, askBackup;
+        private int statsLines, statsSize, statsItems;
+        private SeriesChartType statsChart = SeriesChartType.Pie;
 
         public GMLpal() {
             InitializeComponent();
@@ -40,11 +41,11 @@ namespace GMLpal {
             changed = false;
             askBackup = true;
             cmbxStatsChart.Text = "Pie";
-            shufflePalette();
+            ShufflePalette();
         }
 
         // Actions
-        private void open() {
+        private void Open() {
             tab = "";
             container.Panel2.Controls.Clear();
             codeList.Clear();
@@ -58,11 +59,11 @@ namespace GMLpal {
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
-            addScripts(doc.SelectSingleNode("assets/scripts"), root.Nodes.Add("Scripts"));
-            addShaders(doc.SelectSingleNode("assets/shaders"), root.Nodes.Add("Shaders"));
-            addTimelines(doc.SelectSingleNode("assets/timelines"), root.Nodes.Add("Timelines"));
-            addObjects(doc.SelectSingleNode("assets/objects"), root.Nodes.Add("Objects"));
-            addRooms(doc.SelectSingleNode("assets/rooms"), root.Nodes.Add("Rooms"));
+            AddScripts(doc.SelectSingleNode("assets/scripts"), root.Nodes.Add("Scripts"));
+            AddShaders(doc.SelectSingleNode("assets/shaders"), root.Nodes.Add("Shaders"));
+            AddTimelines(doc.SelectSingleNode("assets/timelines"), root.Nodes.Add("Timelines"));
+            AddObjects(doc.SelectSingleNode("assets/objects"), root.Nodes.Add("Objects"));
+            AddRooms(doc.SelectSingleNode("assets/rooms"), root.Nodes.Add("Rooms"));
 
             int constantN = -1;
             root.Nodes.Add("Constants");
@@ -81,13 +82,13 @@ namespace GMLpal {
             }
             treeProject.EndUpdate();
         }
-        public void addScripts(XmlNode folder, TreeNode node) {
+        public void AddScripts(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "scripts") {
                     newNode.Text = child.Attributes[0].Value;
-                    addScripts(child, newNode);
+                    AddScripts(child, newNode);
                 } else {
                     string file = filePath + child.InnerText;
                     newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
@@ -98,13 +99,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void addShaders(XmlNode folder, TreeNode node) {
+        public void AddShaders(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "shaders") {
                     newNode.Text = child.Attributes[0].Value;
-                    addShaders(child, newNode);
+                    AddShaders(child, newNode);
                 } else {
                     string file = filePath + child.InnerText;
                     string[] split = File.ReadAllText(file).Split(shaderSep, StringSplitOptions.None);
@@ -126,13 +127,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void addTimelines(XmlNode folder, TreeNode node) {
+        public void AddTimelines(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "timelines") {
                     newNode.Text = child.Attributes[0].Value;
-                    addTimelines(child, newNode);
+                    AddTimelines(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".timeline.gmx";
                     int stepN = -1;
@@ -162,13 +163,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void addObjects(XmlNode folder, TreeNode node) {
+        public void AddObjects(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "objects") {
                     newNode.Text = child.Attributes[0].Value;
-                    addObjects(child, newNode);
+                    AddObjects(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".object.gmx";
                     int eventN = -1;
@@ -177,7 +178,7 @@ namespace GMLpal {
                     newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
                     foreach (XmlNode events in doc.SelectNodes("object/events/event")) { // Steps
                         eventN++;
-                        TreeNode eventNode = newNode.Nodes.Add(eventName(events.Attributes[0].Value) + " event");
+                        TreeNode eventNode = newNode.Nodes.Add(EventName(events.Attributes[0].Value) + " event");
                         int actionN = -1;
                         foreach (XmlNode dndAction in events.SelectNodes("action")) { // D&D actions
                             actionN++;
@@ -198,13 +199,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void addRooms(XmlNode folder, TreeNode node) {
+        public void AddRooms(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "rooms") {
                     newNode.Text = child.Attributes[0].Value;
-                    addRooms(child, newNode);
+                    AddRooms(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".room.gmx", roomCode;
                     XmlDocument doc = new XmlDocument();
@@ -238,14 +239,14 @@ namespace GMLpal {
                 }
             }
         }
-        private void save() {
+        private void Save() {
             string backupLocation = Path.GetDirectoryName(Path.GetDirectoryName(fileName)) + @"\" + fileDisplayName + " - backup";
             if (askBackup && MessageBox.Show("Do you want to create a backup of the project before saving?" + Environment.NewLine + "The backup will be stored in " + backupLocation, "GMLpal", MessageBoxButtons.YesNo) == DialogResult.Yes) DirectoryCopy(Path.GetDirectoryName(fileName), backupLocation);
             foreach (Code c in codeList) c.Save();
             changed = false;
             askBackup = false;
         }
-        private void find() {
+        private void Find() {
             regexOptions = RegexOptions.Multiline;
             findResults = 0;
             findItems = 0;
@@ -273,17 +274,17 @@ namespace GMLpal {
                     MessageBox.Show("No item is selected for searching.");
                     return;
                 }
-                findInNode(treeProject.SelectedNode);
+                FindInNode(treeProject.SelectedNode);
             } else {
                 for (int i = 0; i < 6; i++) {
-                    if (clbxFindProject.GetItemChecked(i)) findInNode(treeProject.Nodes[0].Nodes[i]);
+                    if (clbxFindProject.GetItemChecked(i)) FindInNode(treeProject.Nodes[0].Nodes[i]);
                 }
             }
             treeFind.EndUpdate();
 
             lblFindResult.Text = findResults + " results found in " + findItems + " items";
         }
-        public void findInNode(TreeNode node) {
+        public void FindInNode(TreeNode node) {
             if (node.Tag != null) {
                 Code codeObject = (Code)node.Tag;
                 MatchCollection matches = regexObject.Matches(codeObject.code);
@@ -295,7 +296,7 @@ namespace GMLpal {
                     findItems++;
                     foreach (Match match in matches) {
                         TreeNode matchNode = resultRoot.Nodes.Add("");
-                        int line = lineNumber(codeLines, match.Index);
+                        int line = LineNumber(codeLines, match.Index);
                         if (cbxReplace.Checked) matchNode.Text = "\"" + match.Value + "\" -> \"" + regexObject.Replace(match.Value, replaceRegex) + "\" at line " + (line + 1) + ": " + regexObject.Replace(codeLines[line], replaceRegex).Trim();
                         else matchNode.Text = "\"" + match.Value + "\" at line " + (line + 1) + ": " + codeLines[line].Trim();
                         matchNode.NodeFont = matchFont;
@@ -308,9 +309,9 @@ namespace GMLpal {
                     }
                 }
             }
-            foreach (TreeNode n in node.Nodes) findInNode(n);
+            foreach (TreeNode n in node.Nodes) FindInNode(n);
         }
-        private void updateStats() {
+        private void UpdateStats() {
             TreeNode node = treeProject.SelectedNode;
             if (node == null) return;
             lblStatsHeader.Text = "Stats (" + node.Text + ")";
@@ -327,13 +328,13 @@ namespace GMLpal {
             series.Label = "#LABEL";
             series.Points.Clear();
 
-            getStats(node, true);
+            GetStats(node, true);
             lblStats.Text = "Lines of code: " + statsLines + Environment.NewLine;
-            lblStats.Text += "Size: " + sizeToString(statsSize) + Environment.NewLine;
+            lblStats.Text += "Size: " + SizeToString(statsSize) + Environment.NewLine;
             lblStats.Text += "Items: " + statsItems;
             chartStats.Visible = (series.Points.Count > 0);
         }
-        private int getStats(TreeNode node, bool root) {
+        private int GetStats(TreeNode node, bool root) {
             int val = 0;
             if (node.Tag != null) {
                 Code codeObject = (Code)node.Tag;
@@ -345,42 +346,42 @@ namespace GMLpal {
             }
             if (rbtnStatsItems.Checked) val = node.GetNodeCount(true);
             foreach (TreeNode child in node.Nodes) {
-                int childVal = getStats(child, false);
+                int childVal = GetStats(child, false);
                 statsItems++;
                 val += childVal;
                 if (root && childVal > 0) {
                     string suffix = "";
                     if (!cbxStatsNamesOnly.Checked) {
                         if (rbtnStatsLines.Checked) suffix = " (" + childVal + " lines)";
-                        else if (rbtnStatsSize.Checked) suffix = " (" + sizeToString(childVal) + ")";
+                        else if (rbtnStatsSize.Checked) suffix = " (" + SizeToString(childVal) + ")";
                         else suffix = " (" + childVal + " items)";
                     }
-                    chartAdd(child.Text + suffix, childVal);
+                    ChartAdd(child.Text + suffix, childVal);
                 }
             }
             return val;
         }
-        private void shufflePalette() {
+        private void ShufflePalette() {
             chartPalette.Clear();
             for (int i = 0; i < 32; i++) chartPalette.Add(Color.FromArgb(rnd.Next(127, 255), rnd.Next(127, 255), rnd.Next(127, 255)));
         }
-        private void chartAdd(string text, int val) {
+        private void ChartAdd(string text, int val) {
             DataPoint dp = chartStats.Series[0].Points.Add(val);
             dp.Label = text;
             dp.Color = chartPalette[(chartStats.Series[0].Points.Count - 1) % chartPalette.Count];
-            dp.BackSecondaryColor = colorAdd(dp.Color, - 75);
+            dp.BackSecondaryColor = ColorAdd(dp.Color, - 75);
         }
-        private Color colorAdd(Color c, int val) {
+        private Color ColorAdd(Color c, int val) {
             return Color.FromArgb(c.A, Math.Max(0, c.R + val), Math.Max(0, c.G + val), Math.Max(0, c.B + val));
         }
-        private string sizeToString(long val) {
+        private string SizeToString(long val) {
             if (val < 1) return "0b";
             string[] suf = { "b", "kB", "MB", "GB", "TB", "PB" };
             int place = Convert.ToInt32(Math.Floor(Math.Log(val, 1024)));
             double num = Math.Round(val / Math.Pow(1024, place), 1);
             return num.ToString() + suf[place];
         }
-        private string eventName(string n) {
+        private string EventName(string n) {
             switch (n) {
                 case "0": return "Create";
                 case "1": return "Destroy";
@@ -396,7 +397,7 @@ namespace GMLpal {
             }
             return "";
         }
-        private void changeTab(string t) {
+        private void ChangeTab(string t) {
             if ((t == "code" || t == "") && (tab == "find" || tab == "stats")) return;
             container.Panel2.Controls.Clear();
             Size s = new Size(container.Panel2.Width - 4, container.Panel2.Height - 2);
@@ -414,26 +415,26 @@ namespace GMLpal {
                 case "stats": {
                     container.Panel2.Controls.Add(controlsStats);
                     controlsStats.Size = s;
-                    updateStats();
+                    UpdateStats();
                     break;
                 }
             }
             tab = t;
         }
-        private void updateSel() {
+        private void UpdateSel() {
             if (treeProject.SelectedNode == null) return;
             TreeNode selNode = treeProject.SelectedNode;
             Code codeObject = (Code)selNode.Tag;
             rbtnFindSelected.Text = "Find within selected item (" + selNode.Text + ")";
 
             if (codeObject != null) {
-                changeTab("code");
+                ChangeTab("code");
                 tbxCode.Text = codeObject.code;
-            } else changeTab("");
+            } else ChangeTab("");
 
-            if (tab == "stats") updateStats();
+            if (tab == "stats") UpdateStats();
         }
-        public int lineNumber(string[] lines, int pos) {
+        public int LineNumber(string[] lines, int pos) {
             int c = 0, line = 0;
             while (true) {
                 c += lines[line].Length + Environment.NewLine.Length;
@@ -473,7 +474,7 @@ namespace GMLpal {
         }
 
         // Tools
-        private void openToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e) {
             if (changed && MessageBox.Show("You have unchanged changes. Do you still want to open a new project?", "GMLpal", MessageBoxButtons.YesNo) == DialogResult.No) return;
             DialogResult res = openFileBrowse.ShowDialog();
             if (res != DialogResult.OK) return;
@@ -481,9 +482,9 @@ namespace GMLpal {
             filePath = Path.GetDirectoryName(fileName) + @"\";
             fileDisplayName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileName));
             Text = fileDisplayName + " - GMLpal";
-            open();
+            Open();
         }
-        private void saveChangesToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void SaveChangesToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
                 MessageBox.Show("No project loaded.");
                 return;
@@ -492,46 +493,46 @@ namespace GMLpal {
                 MessageBox.Show("You haven't made any changes!");
                 return;
             }
-            save();
+            Save();
         }
-        private void reloadToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void ReloadToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            open();
+            Open();
         }
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) {
             Close();
         }
-        private void findToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void FindToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            changeTab("find");
+            ChangeTab("find");
         }
-        private void replaceToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            changeTab("replace");
+            ChangeTab("replace");
         }
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e) {
             MessageBox.Show("GMLpal 1.0, 2014.06.30 by David \"Davve\" Norgren" + Environment.NewLine + "For GM:Studio v1.3.1354 by YoYoGames");
         }
-        private void statsToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void StatsToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            changeTab("stats");
+            ChangeTab("stats");
         }
 
         // Form
-        private void treeProject_AfterSelect(object sender, TreeViewEventArgs e) {
-            updateSel();
+        private void TreeProject_AfterSelect(object sender, TreeViewEventArgs e) {
+            UpdateSel();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
             if (changed && MessageBox.Show("You have unchanged changes. Do you still want to exit?", "GMLpal", MessageBoxButtons.YesNo) == DialogResult.No) {
@@ -541,63 +542,63 @@ namespace GMLpal {
         }
         
         // Find and replace
-        private void btnFindClose_Click(object sender, EventArgs e) {
+        private void BtnFindClose_Click(object sender, EventArgs e) {
             tab = "";
-            changeTab("");
-            updateSel();
+            ChangeTab("");
+            UpdateSel();
         }
-        private void rbtnFindSelected_CheckedChanged(object sender, EventArgs e) {
+        private void RbtnFindSelected_CheckedChanged(object sender, EventArgs e) {
             clbxFindProject.Enabled = rbtnFindProject.Checked;
         }
         private void rbtnFindProject_CheckedChanged(object sender, EventArgs e) {
             clbxFindProject.Enabled = rbtnFindProject.Checked;
         }
-        private void tbxFind_TextChanged(object sender, EventArgs e) {
+        private void TbxFind_TextChanged(object sender, EventArgs e) {
             btnFind.Enabled = (tbxFind.Text != "");
         }
-        private void btnFind_Click(object sender, EventArgs e) {
-            find();
+        private void BtnFind_Click(object sender, EventArgs e) {
+            Find();
         }
-        private void rbtnFindAdvanced_CheckedChanged(object sender, EventArgs e) {
+        private void RbtnFindAdvanced_CheckedChanged(object sender, EventArgs e) {
             lblFind.Text = rbtnFindAdvanced.Checked ? "RegEx:" : "Find:";
             cbxRegexMultiLine.Visible = rbtnFindAdvanced.Checked;
         }
-        private void rbtnFindSimple_CheckedChanged(object sender, EventArgs e) {
+        private void RbtnFindSimple_CheckedChanged(object sender, EventArgs e) {
             lblFind.Text = rbtnFindAdvanced.Checked ? "RegEx:" : "Find:";
             cbxRegexMultiLine.Visible = rbtnFindAdvanced.Checked;
         }
-        private void cbxReplace_CheckedChanged(object sender, EventArgs e) {
+        private void CbxReplace_CheckedChanged(object sender, EventArgs e) {
             tbxReplace.Enabled = cbxReplace.Checked;
             btnFind.Text = cbxReplace.Checked ? "Find and replace" : "Find";
         }
 
         // Stats
-        private void btnStatsClose_Click(object sender, EventArgs e) {
+        private void BtnStatsClose_Click(object sender, EventArgs e) {
             tab = "";
-            changeTab("");
-            updateSel();
+            ChangeTab("");
+            UpdateSel();
         }
-        private void cmbxStatsChart_SelectedIndexChanged(object sender, EventArgs e) {
+        private void CmbxStatsChart_SelectedIndexChanged(object sender, EventArgs e) {
             switch (cmbxStatsChart.Text) {
                 case "Column": statsChart = SeriesChartType.Column; break;
                 case "Pie": statsChart = SeriesChartType.Pie; break;
                 case "Doughnut": statsChart = SeriesChartType.Doughnut; break;
                 case "Pyramid": statsChart = SeriesChartType.Pyramid; break;
             }
-            updateStats();
+            UpdateStats();
         }
-        private void btnStatsShuffleColors_Click(object sender, EventArgs e) {
-            shufflePalette();
-            updateStats();
+        private void BtnStatsShuffleColors_Click(object sender, EventArgs e) {
+            ShufflePalette();
+            UpdateStats();
         }
-        private void rbtnStatsLines_CheckedChanged(object sender, EventArgs e) {
-            updateStats();
+        private void RbtnStatsLines_CheckedChanged(object sender, EventArgs e) {
+            UpdateStats();
         }
-        private void rbtnStatsSize_CheckedChanged(object sender, EventArgs e) {
-            updateStats();
+        private void RbtnStatsSize_CheckedChanged(object sender, EventArgs e) {
+            UpdateStats();
         }
-        private void cbxStatsNamesOnly_CheckedChanged(object sender, EventArgs e) {
-            updateStats();
+        private void CbxStatsNamesOnly_CheckedChanged(object sender, EventArgs e) {
+            UpdateStats();
         }
     }
 }
