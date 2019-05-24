@@ -75,7 +75,7 @@ namespace GMLpal {
                 case GMSTypes.GMS2:
                     try {
                         OpenGMS2();
-                    } catch {
+                    } catch (Exception e) {
                         MessageBox.Show("Bad Game Maker Studio 2 project, apparnetly?\n" + e.ToString());
                     }
                     break;
