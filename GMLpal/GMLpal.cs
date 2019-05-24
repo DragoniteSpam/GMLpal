@@ -8,7 +8,13 @@ using System.Xml;
 using System.Text.RegularExpressions;
 
 namespace GMLpal {
+    public enum GMSTypes {
+        GMS1, GMS2
+    }
     public partial class GMLpal : Form {
+        private const string extGMS1 = ".gmx";
+        private const string extGMS2 = ".yyp";
+
         private string fileDisplayName = "";
         private string fileName = "";
         private string filePath = "";
@@ -45,7 +51,7 @@ namespace GMLpal {
         }
 
         // Actions
-        private void Open() {
+        private void Open(GMSTypes type) {
             tab = "";
             container.Panel2.Controls.Clear();
             codeList.Clear();
@@ -56,6 +62,19 @@ namespace GMLpal {
             treeProject.Nodes.Clear();
             treeProject.BeginUpdate();
 
+            switch (type) {
+                case GMSTypes.GMS1:
+                    OpenGMS1();
+                    break;
+                case GMSTypes.GMS2:
+                    OpenGMS2();
+                    break;
+            }
+            
+            treeProject.EndUpdate();
+        }
+
+        private void OpenGMS1() {
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
@@ -80,7 +99,10 @@ namespace GMLpal {
                 constantNode.SelectedImageIndex = 2;
                 codeList.Add((Code)constantNode.Tag);
             }
-            treeProject.EndUpdate();
+        }
+
+        private void OpenGMS2() {
+
         }
         public void AddScripts(XmlNode folder, TreeNode node) {
             if (folder == null) return;
@@ -479,10 +501,12 @@ namespace GMLpal {
             DialogResult res = openFileBrowse.ShowDialog();
             if (res != DialogResult.OK) return;
             fileName = openFileBrowse.FileName;
+            string fileExtension = Path.GetExtension(fileName);
             filePath = Path.GetDirectoryName(fileName) + @"\";
             fileDisplayName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileName));
             Text = fileDisplayName + " - GMLpal";
-            Open();
+            
+            Open(fileExtension.Equals(extGMS1) ? GMSTypes.GMS1 : GMSTypes.GMS2);
         }
         private void SaveChangesToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
@@ -500,7 +524,7 @@ namespace GMLpal {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            Open();
+            Open(Path.GetExtension(fileName).Equals(extGMS1) ? GMSTypes.GMS1 : GMSTypes.GMS2);
         }
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) {
             Close();

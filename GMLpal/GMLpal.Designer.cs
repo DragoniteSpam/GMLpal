@@ -698,7 +698,7 @@
             // 
             // openFileBrowse
             // 
-            this.openFileBrowse.Filter = "GameMaker Studio projects|*.project.gmx";
+            this.openFileBrowse.Filter = "GMS1 or 2 projects|*.project.gmx;*.yyp|GameMaker Studio projects|*.project.gmx|Game Maker Studio 2 projects|*.yyp";
             // 
             // cbxRegexMultiLine
             // 
