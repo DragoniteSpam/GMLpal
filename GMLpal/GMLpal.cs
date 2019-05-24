@@ -112,8 +112,10 @@ namespace GMLpal {
         }
 
         private void OpenGMS2() {
-            MessageBox.Show(JsonConvert.DeserializeObject<GMS2Project>(File.ReadAllText(fileName)).ToString());
+            GMS2Project project = JsonConvert.DeserializeObject<GMS2Project>(File.ReadAllText(fileName));
+            project.Name = Path.GetFileName(fileName);
         }
+
         public void AddScripts(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
