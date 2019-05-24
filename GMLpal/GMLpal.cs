@@ -65,10 +65,19 @@ namespace GMLpal {
 
             switch (type) {
                 case GMSTypes.GMS1:
-                    OpenGMS1();
+                    try {
+                        OpenGMS1();
+                    } catch (Exception e) {
+                        MessageBox.Show("Bad GameMaker: Studio project, apparnetly?\n" + e.ToString());
+                    }
+                    
                     break;
                 case GMSTypes.GMS2:
-                    OpenGMS2();
+                    try {
+                        OpenGMS2();
+                    } catch {
+                        MessageBox.Show("Bad Game Maker Studio 2 project, apparnetly?\n" + e.ToString());
+                    }
                     break;
             }
             
