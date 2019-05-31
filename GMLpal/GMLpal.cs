@@ -114,6 +114,18 @@ namespace GMLpal {
         private void OpenGMS2() {
             GMS2Project project = JsonConvert.DeserializeObject<GMS2Project>(File.ReadAllText(fileName));
             project.Name = Path.GetFileName(fileName);
+
+            foreach (GMS2_Resource resource in project.resources) {
+                GMS2_Resource_Value value = resource.Value;
+                Console.WriteLine("Type: " + value.resourceType + " in " + value.resourcePath);
+            }
+
+            TreeNode root = treeProject.Nodes.Add(fileDisplayName);
+            AddScripts(null, root.Nodes.Add("Scripts"));
+            AddShaders(null, root.Nodes.Add("Shaders"));
+            AddTimelines(null, root.Nodes.Add("Timelines"));
+            AddObjects(null, root.Nodes.Add("Objects"));
+            AddRooms(null, root.Nodes.Add("Rooms"));
         }
 
         public void AddScripts(XmlNode folder, TreeNode node) {

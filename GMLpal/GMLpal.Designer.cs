@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GMLpal));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +53,7 @@
             this.panFind = new System.Windows.Forms.Panel();
             this.tbxReplace = new System.Windows.Forms.TextBox();
             this.cbxReplace = new System.Windows.Forms.CheckBox();
+            this.cbxRegexMultiLine = new System.Windows.Forms.CheckBox();
             this.cbxFindWord = new System.Windows.Forms.CheckBox();
             this.lblFindResult = new System.Windows.Forms.Label();
             this.cbxFindCase = new System.Windows.Forms.CheckBox();
@@ -82,7 +83,6 @@
             this.btnStatsClose = new System.Windows.Forms.Button();
             this.lblStatsHeader = new System.Windows.Forms.Label();
             this.openFileBrowse = new System.Windows.Forms.OpenFileDialog();
-            this.cbxRegexMultiLine = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
@@ -355,6 +355,17 @@
             this.cbxReplace.Text = "Replace:";
             this.cbxReplace.UseVisualStyleBackColor = true;
             this.cbxReplace.CheckedChanged += new System.EventHandler(this.CbxReplace_CheckedChanged);
+            // 
+            // cbxRegexMultiLine
+            // 
+            this.cbxRegexMultiLine.AutoSize = true;
+            this.cbxRegexMultiLine.Location = new System.Drawing.Point(215, 58);
+            this.cbxRegexMultiLine.Name = "cbxRegexMultiLine";
+            this.cbxRegexMultiLine.Size = new System.Drawing.Size(98, 17);
+            this.cbxRegexMultiLine.TabIndex = 17;
+            this.cbxRegexMultiLine.Text = "Regex Multiline";
+            this.cbxRegexMultiLine.UseVisualStyleBackColor = true;
+            this.cbxRegexMultiLine.Visible = false;
             // 
             // cbxFindWord
             // 
@@ -662,15 +673,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chartStats.BackColor = System.Drawing.SystemColors.Control;
-            chartArea2.Name = "ChartArea1";
-            this.chartStats.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.chartStats.ChartAreas.Add(chartArea1);
             this.chartStats.Location = new System.Drawing.Point(4, 79);
             this.chartStats.Name = "chartStats";
             this.chartStats.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
-            series2.ChartArea = "ChartArea1";
-            series2.Name = "Series1";
-            series2.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
-            this.chartStats.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Name = "Series1";
+            series1.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            this.chartStats.Series.Add(series1);
             this.chartStats.Size = new System.Drawing.Size(527, 245);
             this.chartStats.TabIndex = 7;
             this.chartStats.Text = "Stats";
@@ -698,18 +709,8 @@
             // 
             // openFileBrowse
             // 
-            this.openFileBrowse.Filter = "GMS1 or 2 projects|*.project.gmx;*.yyp|GameMaker Studio projects|*.project.gmx|Game Maker Studio 2 projects|*.yyp";
-            // 
-            // cbxRegexMultiLine
-            // 
-            this.cbxRegexMultiLine.AutoSize = true;
-            this.cbxRegexMultiLine.Location = new System.Drawing.Point(215, 58);
-            this.cbxRegexMultiLine.Name = "cbxRegexMultiLine";
-            this.cbxRegexMultiLine.Size = new System.Drawing.Size(98, 17);
-            this.cbxRegexMultiLine.TabIndex = 17;
-            this.cbxRegexMultiLine.Text = "Regex Multiline";
-            this.cbxRegexMultiLine.UseVisualStyleBackColor = true;
-            this.cbxRegexMultiLine.Visible = false;
+            this.openFileBrowse.Filter = "GMS1 or 2 projects|*.project.gmx;*.yyp|GameMaker Studio projects|*.project.gmx|Ga" +
+    "me Maker Studio 2 projects|*.yyp";
             // 
             // GMLpal
             // 
