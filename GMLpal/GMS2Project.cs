@@ -21,23 +21,35 @@ namespace GMLpal {
         public string tutorial = "";
 
         // [type-name, [guid, resource]]
-        public Dictionary<string, Dictionary<string, GMS2_Resource>> guids = new Dictionary<string, Dictionary<string, GMS2_Resource>>();
+        private Dictionary<string, Dictionary<string, GMS2_Resource>> tree = new Dictionary<string, Dictionary<string, GMS2_Resource>>();
+        // [guid, resource]
+        private Dictionary<string, GMS2_Resource> guids = new Dictionary<string, GMS2_Resource>();
 
         public override string ToString() {
             return Name;
         }
 
         public void Add(GMS2_Resource resource) {
-            Dictionary<string, GMS2_Resource> map = new Dictionary<string, GMS2_Resource>();
+            Dictionary<string, GMS2_Resource> map;
 
-            if (!guids.ContainsKey(resource.Value.resourceType)) {
+            if (!tree.ContainsKey(resource.Value.resourceType)) {
                 map = new Dictionary<string, GMS2_Resource>();
-                guids.Add(resource.Value.resourceType, map);
+                tree.Add(resource.Value.resourceType, map);
             } else {
-                map = guids[resource.Value.resourceType];
+                map = tree[resource.Value.resourceType];
             }
 
             map.Add(resource.Value.id, resource);
+
+            guids.Add(resource.Value.id, resource);
+        }
+
+        public GMS2_Resource Get(string id) {
+            return guids[id];
+        }
+
+        public Dictionary<string, GMS2_Resource> GetType(string type) {
+            return tree[type];
         }
     }
 
@@ -50,5 +62,18 @@ namespace GMLpal {
         public string id;
         public string resourcePath;
         public string resourceType;
+
+        public bool processed = false;
+    }
+
+    public class GMS2_Folder {
+        public string id;
+        public string modelName;
+        public string mvc;
+        public string[] children;
+        public string filterType;
+        public string folderName;
+        public bool isDefaultView;
+        public string localisedFolderName;
     }
 }

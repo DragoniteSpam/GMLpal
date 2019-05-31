@@ -13,8 +13,8 @@ namespace GMLpal {
         GMS1, GMS2
     }
     public partial class GMLpal : Form {
-        private const string extGMS1 = ".gmx";
-        private const string extGMS2 = ".yyp";
+        private const string EXT_GMS1 = ".gmx";
+        private const string EXT_GMS2 = ".yyp";
 
         private string fileDisplayName = "";
         private string fileName = "";
@@ -120,6 +120,9 @@ namespace GMLpal {
             }
 
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
+
+            AddFolders2(project.GetType("GMFolder"), root.Nodes);
+
             AddScripts2(null, root.Nodes.Add("Scripts"));
             AddShaders2(null, root.Nodes.Add("Shaders"));
             AddTimelines2(null, root.Nodes.Add("Timelines"));
@@ -288,6 +291,18 @@ namespace GMLpal {
         #endregion
 
         #region GMS1 assets
+
+        public void AddFolders2(Dictionary<string, GMS2_Resource> folders, TreeNodeCollection node) {
+            if (folders == null) {
+                return;
+            }
+
+            foreach (KeyValuePair<string, GMS2_Resource> folderData in folders) {
+                GMS2_Folder folder = JsonConvert.DeserializeObject<GMS2_Folder>(File.ReadAllText(filePath + folderData.Value.Value.resourcePath));
+                Console.WriteLine(folder.folderName);
+            }
+        }
+
         public void AddScripts2(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
@@ -692,7 +707,11 @@ namespace GMLpal {
             fileDisplayName = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileName));
             Text = fileDisplayName + " - GMLpal";
             
-            Open(fileExtension.Equals(extGMS1) ? GMSTypes.GMS1 : GMSTypes.GMS2);
+            if (fileExtension.Equals(EXT_GMS1)) {
+                Open(GMSTypes.GMS1);
+            } else if (fileExtension.Equals(EXT_GMS2)) {
+                Open(GMSTypes.GMS2);
+            }
         }
         private void SaveChangesToolStripMenuItem_Click(object sender, EventArgs e) {
             if (fileName == "") {
@@ -710,7 +729,7 @@ namespace GMLpal {
                 MessageBox.Show("No project loaded.");
                 return;
             }
-            Open(Path.GetExtension(fileName).Equals(extGMS1) ? GMSTypes.GMS1 : GMSTypes.GMS2);
+            Open(Path.GetExtension(fileName).Equals(EXT_GMS1) ? GMSTypes.GMS1 : GMSTypes.GMS2);
         }
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) {
             Close();
