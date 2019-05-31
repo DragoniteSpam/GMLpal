@@ -8,7 +8,6 @@ namespace GMLpal {
             code = c;
         }
 
-
         public override void Save() {
             if (!changed) return;
             changed = false;

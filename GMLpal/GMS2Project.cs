@@ -1,4 +1,5 @@
-﻿#pragma warning disable 649
+﻿using System.Collections.Generic;
+
 namespace GMLpal {
     public class GMS2Project {
         public string Name {
@@ -19,8 +20,24 @@ namespace GMLpal {
         public string[] script_order = { "" };
         public string tutorial = "";
 
+        // [type-name, [guid, resource]]
+        public Dictionary<string, Dictionary<string, GMS2_Resource>> guids = new Dictionary<string, Dictionary<string, GMS2_Resource>>();
+
         public override string ToString() {
             return Name;
+        }
+
+        public void Add(GMS2_Resource resource) {
+            Dictionary<string, GMS2_Resource> map = new Dictionary<string, GMS2_Resource>();
+
+            if (!guids.ContainsKey(resource.Value.resourceType)) {
+                map = new Dictionary<string, GMS2_Resource>();
+                guids.Add(resource.Value.resourceType, map);
+            } else {
+                map = guids[resource.Value.resourceType];
+            }
+
+            map.Add(resource.Value.id, resource);
         }
     }
 
@@ -35,4 +52,3 @@ namespace GMLpal {
         public string resourceType;
     }
 }
-#pragma warning restore 649

@@ -88,11 +88,11 @@ namespace GMLpal {
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
-            AddScripts(doc.SelectSingleNode("assets/scripts"), root.Nodes.Add("Scripts"));
-            AddShaders(doc.SelectSingleNode("assets/shaders"), root.Nodes.Add("Shaders"));
-            AddTimelines(doc.SelectSingleNode("assets/timelines"), root.Nodes.Add("Timelines"));
-            AddObjects(doc.SelectSingleNode("assets/objects"), root.Nodes.Add("Objects"));
-            AddRooms(doc.SelectSingleNode("assets/rooms"), root.Nodes.Add("Rooms"));
+            AddScripts1(doc.SelectSingleNode("assets/scripts"), root.Nodes.Add("Scripts"));
+            AddShaders1(doc.SelectSingleNode("assets/shaders"), root.Nodes.Add("Shaders"));
+            AddTimelines1(doc.SelectSingleNode("assets/timelines"), root.Nodes.Add("Timelines"));
+            AddObjects1(doc.SelectSingleNode("assets/objects"), root.Nodes.Add("Objects"));
+            AddRooms1(doc.SelectSingleNode("assets/rooms"), root.Nodes.Add("Rooms"));
 
             int constantN = -1;
             root.Nodes.Add("Constants");
@@ -116,25 +116,25 @@ namespace GMLpal {
             project.Name = Path.GetFileName(fileName);
 
             foreach (GMS2_Resource resource in project.resources) {
-                GMS2_Resource_Value value = resource.Value;
-                Console.WriteLine("Type: " + value.resourceType + " in " + value.resourcePath);
+                project.Add(resource);
             }
 
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
-            AddScripts(null, root.Nodes.Add("Scripts"));
-            AddShaders(null, root.Nodes.Add("Shaders"));
-            AddTimelines(null, root.Nodes.Add("Timelines"));
-            AddObjects(null, root.Nodes.Add("Objects"));
-            AddRooms(null, root.Nodes.Add("Rooms"));
+            AddScripts2(null, root.Nodes.Add("Scripts"));
+            AddShaders2(null, root.Nodes.Add("Shaders"));
+            AddTimelines2(null, root.Nodes.Add("Timelines"));
+            AddObjects2(null, root.Nodes.Add("Objects"));
+            AddRooms2(null, root.Nodes.Add("Rooms"));
         }
 
-        public void AddScripts(XmlNode folder, TreeNode node) {
+        #region GMS1 assets
+        public void AddScripts1(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "scripts") {
                     newNode.Text = child.Attributes[0].Value;
-                    AddScripts(child, newNode);
+                    AddScripts1(child, newNode);
                 } else {
                     string file = filePath + child.InnerText;
                     newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
@@ -145,13 +145,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void AddShaders(XmlNode folder, TreeNode node) {
+        public void AddShaders1(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "shaders") {
                     newNode.Text = child.Attributes[0].Value;
-                    AddShaders(child, newNode);
+                    AddShaders1(child, newNode);
                 } else {
                     string file = filePath + child.InnerText;
                     string[] split = File.ReadAllText(file).Split(shaderSep, StringSplitOptions.None);
@@ -173,13 +173,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void AddTimelines(XmlNode folder, TreeNode node) {
+        public void AddTimelines1(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "timelines") {
                     newNode.Text = child.Attributes[0].Value;
-                    AddTimelines(child, newNode);
+                    AddTimelines1(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".timeline.gmx";
                     int stepN = -1;
@@ -209,13 +209,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void AddObjects(XmlNode folder, TreeNode node) {
+        public void AddObjects1(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "objects") {
                     newNode.Text = child.Attributes[0].Value;
-                    AddObjects(child, newNode);
+                    AddObjects1(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".object.gmx";
                     int eventN = -1;
@@ -245,13 +245,13 @@ namespace GMLpal {
                 }
             }
         }
-        public void AddRooms(XmlNode folder, TreeNode node) {
+        public void AddRooms1(XmlNode folder, TreeNode node) {
             if (folder == null) return;
             foreach (XmlNode child in folder.ChildNodes) {
                 TreeNode newNode = node.Nodes.Add("");
                 if (child.Name == "rooms") {
                     newNode.Text = child.Attributes[0].Value;
-                    AddRooms(child, newNode);
+                    AddRooms1(child, newNode);
                 } else {
                     string file = filePath + child.InnerText + ".room.gmx", roomCode;
                     XmlDocument doc = new XmlDocument();
@@ -285,6 +285,168 @@ namespace GMLpal {
                 }
             }
         }
+        #endregion
+
+        #region GMS1 assets
+        public void AddScripts2(XmlNode folder, TreeNode node) {
+            if (folder == null) return;
+            foreach (XmlNode child in folder.ChildNodes) {
+                TreeNode newNode = node.Nodes.Add("");
+                if (child.Name == "scripts") {
+                    newNode.Text = child.Attributes[0].Value;
+                    AddScripts2(child, newNode);
+                } else {
+                    string file = filePath + child.InnerText;
+                    newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
+                    newNode.Tag = new Script(file, "Script " + newNode.Text, File.ReadAllText(file));
+                    newNode.ImageIndex = 2;
+                    newNode.SelectedImageIndex = 2;
+                    codeList.Add((Code)newNode.Tag);
+                }
+            }
+        }
+        public void AddShaders2(XmlNode folder, TreeNode node) {
+            if (folder == null) return;
+            foreach (XmlNode child in folder.ChildNodes) {
+                TreeNode newNode = node.Nodes.Add("");
+                if (child.Name == "shaders") {
+                    newNode.Text = child.Attributes[0].Value;
+                    AddShaders2(child, newNode);
+                } else {
+                    string file = filePath + child.InnerText;
+                    string[] split = File.ReadAllText(file).Split(shaderSep, StringSplitOptions.None);
+                    string vertexCode = split[0];
+                    string fragmentCode = split[1];
+                    newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
+
+                    TreeNode vertexNode = newNode.Nodes.Add("Vertex shader");
+                    vertexNode.Tag = new VertexShader(file, "Vertex shader of " + newNode.Text, vertexCode);
+                    vertexNode.ImageIndex = 2;
+                    vertexNode.SelectedImageIndex = 2;
+                    codeList.Add((Code)vertexNode.Tag);
+
+                    TreeNode fragmentNode = newNode.Nodes.Add("Fragment shader");
+                    fragmentNode.Tag = new FragmentShader(file, "Fragment shader of " + newNode.Text, fragmentCode);
+                    fragmentNode.ImageIndex = 2;
+                    fragmentNode.SelectedImageIndex = 2;
+                    codeList.Add((Code)fragmentNode.Tag);
+                }
+            }
+        }
+        public void AddTimelines2(XmlNode folder, TreeNode node) {
+            if (folder == null) return;
+            foreach (XmlNode child in folder.ChildNodes) {
+                TreeNode newNode = node.Nodes.Add("");
+                if (child.Name == "timelines") {
+                    newNode.Text = child.Attributes[0].Value;
+                    AddTimelines2(child, newNode);
+                } else {
+                    string file = filePath + child.InnerText + ".timeline.gmx";
+                    int stepN = -1;
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(file);
+                    newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
+                    foreach (XmlNode entry in doc.SelectNodes("timeline/entry")) { // Steps
+                        stepN++;
+                        TreeNode stepNode = newNode.Nodes.Add(" Step " + entry.SelectSingleNode("step").InnerText);
+                        int actionN = -1;
+                        foreach (XmlNode dndAction in entry.SelectNodes("event/action")) { // D&D actions
+                            actionN++;
+                            if (dndAction.SelectSingleNode("id").InnerText != dndCode) continue;
+                            TreeNode actionNode = stepNode.Nodes.Add("D&D code action");
+                            actionNode.Tag = new TimelineAction(
+                                file,
+                                "D&D code action in Step " + stepN + " of " + newNode.Text,
+                                stepN,
+                                actionN,
+                                dndAction.SelectSingleNode("arguments/argument/string").InnerText
+                            );
+                            actionNode.ImageIndex = 2;
+                            actionNode.SelectedImageIndex = 2;
+                            codeList.Add((Code)actionNode.Tag);
+                        }
+                    }
+                }
+            }
+        }
+        public void AddObjects2(XmlNode folder, TreeNode node) {
+            if (folder == null) return;
+            foreach (XmlNode child in folder.ChildNodes) {
+                TreeNode newNode = node.Nodes.Add("");
+                if (child.Name == "objects") {
+                    newNode.Text = child.Attributes[0].Value;
+                    AddObjects2(child, newNode);
+                } else {
+                    string file = filePath + child.InnerText + ".object.gmx";
+                    int eventN = -1;
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(file);
+                    newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
+                    foreach (XmlNode events in doc.SelectNodes("object/events/event")) { // Steps
+                        eventN++;
+                        TreeNode eventNode = newNode.Nodes.Add(EventName(events.Attributes[0].Value) + " event");
+                        int actionN = -1;
+                        foreach (XmlNode dndAction in events.SelectNodes("action")) { // D&D actions
+                            actionN++;
+                            if (dndAction.SelectSingleNode("id").InnerText != dndCode) continue;
+                            TreeNode actionNode = eventNode.Nodes.Add("D&D code action");
+                            actionNode.Tag = new ObjectAction(
+                                file,
+                                "D&D code action in " + eventNode.Text + " of " + newNode.Text,
+                                eventN,
+                                actionN,
+                                dndAction.SelectSingleNode("arguments/argument/string").InnerText
+                            );
+                            actionNode.ImageIndex = 2;
+                            actionNode.SelectedImageIndex = 2;
+                            codeList.Add((Code)actionNode.Tag);
+                        }
+                    }
+                }
+            }
+        }
+        public void AddRooms2(XmlNode folder, TreeNode node) {
+            if (folder == null) return;
+            foreach (XmlNode child in folder.ChildNodes) {
+                TreeNode newNode = node.Nodes.Add("");
+                if (child.Name == "rooms") {
+                    newNode.Text = child.Attributes[0].Value;
+                    AddRooms2(child, newNode);
+                } else {
+                    string file = filePath + child.InnerText + ".room.gmx", roomCode;
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(file);
+                    roomCode = doc.SelectSingleNode("room/code").InnerText;
+                    newNode.Text = Path.GetFileNameWithoutExtension(child.InnerText);
+                    if (roomCode != "") { // Room creation code
+                        TreeNode roomNode = newNode.Nodes.Add("Creation code");
+                        roomNode.Tag = new Room(file, "Room creation code of " + newNode.Text, roomCode);
+                        roomNode.ImageIndex = 2;
+                        roomNode.SelectedImageIndex = 2;
+                        codeList.Add((Code)roomNode.Tag);
+                    }
+                    int instanceN = -1;
+                    foreach (XmlNode instance in doc.SelectNodes("room/instances/instance")) { // Instances
+                        string instanceCode = instance.Attributes[5].Value;
+                        instanceN++;
+                        if (instanceCode == "") continue;
+                        TreeNode instanceNode = newNode.Nodes.Add("Creation code in instance of " + instance.Attributes[0].Value);
+                        instanceNode.Tag = new Instance(
+                            file,
+                            "Instance creation code in " + instance.Attributes[3].Value + " of " + instance.Attributes[0].Value + " in " + newNode.Text,
+                            instanceN,
+                            instance.Attributes[3].Value,
+                            instanceCode
+                        );
+                        instanceNode.ImageIndex = 2;
+                        instanceNode.SelectedImageIndex = 2;
+                        codeList.Add((Code)instanceNode.Tag);
+                    }
+                }
+            }
+        }
+        #endregion
+
         private void Save() {
             string backupLocation = Path.GetDirectoryName(Path.GetDirectoryName(fileName)) + @"\" + fileDisplayName + " - backup";
             if (askBackup && MessageBox.Show("Do you want to create a backup of the project before saving?" + Environment.NewLine + "The backup will be stored in " + backupLocation, "GMLpal", MessageBoxButtons.YesNo) == DialogResult.Yes) DirectoryCopy(Path.GetDirectoryName(fileName), backupLocation);

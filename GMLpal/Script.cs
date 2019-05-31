@@ -7,6 +7,7 @@ namespace GMLpal {
             name = n;
             code = c;
         }
+
         public override void Save() {
             if (!changed) return;
             changed = false;
