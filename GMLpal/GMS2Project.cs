@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
 
 namespace GMLpal {
     public class GMS2Project {
         public string Name {
             get; set;
         } = "GMS2 Project";
+
+        public string Path {
+            get; set;
+        }
 
         public string id = "";
         public string modelName = "";
@@ -29,19 +37,33 @@ namespace GMLpal {
             return Name;
         }
 
-        public void Add(GMS2_Resource resource) {
-            Dictionary<string, GMS2_Resource> map;
+        public void Organize() {
+            foreach (GMS2_Resource resource in resources) {
+                Dictionary<string, GMS2_Resource> map;
 
-            if (!tree.ContainsKey(resource.Value.resourceType)) {
-                map = new Dictionary<string, GMS2_Resource>();
-                tree.Add(resource.Value.resourceType, map);
-            } else {
-                map = tree[resource.Value.resourceType];
+                if (!tree.ContainsKey(resource.Value.resourceType)) {
+                    map = new Dictionary<string, GMS2_Resource>();
+                    tree.Add(resource.Value.resourceType, map);
+                } else {
+                    map = tree[resource.Value.resourceType];
+                }
+
+                map.Add(resource.Key, resource);
+                
+                guids.Add(resource.Key, resource);
+                //Console.WriteLine(resource.id + " : " + resource.Value.resourcePath);
             }
 
-            map.Add(resource.Value.id, resource);
+            foreach (KeyValuePair<string, GMS2_Resource> folderData in GetType("GMFolder")) {
+                GMS2_Resource_Value value = folderData.Value.Value;
 
-            guids.Add(resource.Value.id, resource);
+                if (!value.processed) {
+                    JsonConvert.DeserializeObject<GMS2_Folder>(File.ReadAllText(Path + folderData.Value.Value.resourcePath)).Organize(this);
+                }
+
+                value.processed = true;
+
+            }
         }
 
         public GMS2_Resource Get(string id) {
@@ -75,5 +97,13 @@ namespace GMLpal {
         public string folderName;
         public bool isDefaultView;
         public string localisedFolderName;
+
+        public List<GMS2_Folder> childFolders = new List<GMS2_Folder>();
+
+        public void Organize(GMS2Project baseProject) {
+            foreach (string id in children) {
+                Console.WriteLine(baseProject.Get(id));
+            }
+        }
     }
 }

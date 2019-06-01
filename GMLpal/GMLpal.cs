@@ -114,14 +114,12 @@ namespace GMLpal {
         private void OpenGMS2() {
             GMS2Project project = JsonConvert.DeserializeObject<GMS2Project>(File.ReadAllText(fileName));
             project.Name = Path.GetFileName(fileName);
-
-            foreach (GMS2_Resource resource in project.resources) {
-                project.Add(resource);
-            }
+            project.Path = filePath;
+            project.Organize();
 
             TreeNode root = treeProject.Nodes.Add(fileDisplayName);
 
-            AddFolders2(project.GetType("GMFolder"), root.Nodes);
+            AddFolders2(null, project, root.Nodes);
 
             AddScripts2(null, root.Nodes.Add("Scripts"));
             AddShaders2(null, root.Nodes.Add("Shaders"));
@@ -292,14 +290,9 @@ namespace GMLpal {
 
         #region GMS1 assets
 
-        public void AddFolders2(Dictionary<string, GMS2_Resource> folders, TreeNodeCollection node) {
+        public void AddFolders2(Dictionary<string, GMS2_Resource> folders, GMS2Project project, TreeNodeCollection node) {
             if (folders == null) {
                 return;
-            }
-
-            foreach (KeyValuePair<string, GMS2_Resource> folderData in folders) {
-                GMS2_Folder folder = JsonConvert.DeserializeObject<GMS2_Folder>(File.ReadAllText(filePath + folderData.Value.Value.resourcePath));
-                Console.WriteLine(folder.folderName);
             }
         }
 
